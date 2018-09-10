@@ -60,8 +60,6 @@
 
   - [不要使用 mixins](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html).
 
-  > 为什么? Mixins 会增加隐式的依赖，导致命名冲突，并且会以雪球式增加复杂度。在大多数情况下Mixins可以被更好的方法替代，如：组件化，高阶组件，工具模块等。
-
     ```jsx
      function downloadExl(json, type) {
         var tmpdata = json[0];
