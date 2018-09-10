@@ -11,12 +11,12 @@
   1. 单元格的样式设置
   1. demo
 
-## a标签
+## <a>标签
+
+  - <a>标签的download属性实现点击下载
 
     ```jsx
-    
     // 如果没传maps则取数据的字段作为maps { 姓名: 'name', 年龄: 'age' }、
-
     const keys = Object.keys(maps);
 
     const csvStr = BOM + [
@@ -33,7 +33,7 @@
     document.body.appendChild(downloadEle);
     downloadEle.click();
     document.body.removeChild(downloadEle);
-    
+    }
     ```
 
   - csv文件分行用 “,”，而分列用\n无效，必须使用encodeURI进行编码.
