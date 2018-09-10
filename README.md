@@ -141,9 +141,9 @@
     }
     ```
 
-  - 样式
+## 样式
 
-  > 单元格样式样式有fill，font，numFmt，alignment，和border。
+  - 单元格样式样式有fill，font，numFmt，alignment，和border。
 
     ```jsx
     wb["B1"].s = {
