@@ -40,50 +40,20 @@
   - 导出csv 格式， 使用Excel 打开会发现中文是乱码，但是用其他文本程序打开确是正常的,原因就是少了一个 BOM头 。  \ufeff。
 
 ## js-xlsx介绍
-   Class vs React.createClass vs stateless  
+   各种电子表格格式的解析器和编写器  
 
-  - 如果你的模块有内部状态或者是`refs`, 推荐使用 `class extends React.Component` 而不是 `React.createClass`.
-  eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md) [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
+  - 在浏览器中使用
 
     ```jsx
     
-    // bad
-    const Listing = React.createClass({
-      // ...
-      render() {
-        return <div>{this.state.hello}</div>;
-      }
-    });
-
-    // good
-    class Listing extends React.Component {
-      // ...
-      render() {
-        return <div>{this.state.hello}</div>;
-      }
-    }
+    < script  src = “ https://unpkg.com/xlsx/dist/xlsx.full.min.js ” > < / script >
     
     ```
 
-    如果你的模块没有状态或是没有引用`refs`， 推荐使用普通函数（非箭头函数）而不是类:
+  - 用npm
 
     ```jsx
-    // bad
-    class Listing extends React.Component {
-      render() {
-        return <div>{this.props.hello}</div>;
-      }
-    }
-
-    // bad (relying on function name inference is discouraged)
-    const Listing = ({ hello }) => (
-      <div>{hello}</div>
-    );
-
-    // good
-    function Listing({ hello }) {
-      return <div>{hello}</div>;
-    }
+    $ npm install xlsx
     ```
 
 ## Mixins
