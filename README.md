@@ -62,62 +62,87 @@
 
   > 为什么? Mixins 会增加隐式的依赖，导致命名冲突，并且会以雪球式增加复杂度。在大多数情况下Mixins可以被更好的方法替代，如：组件化，高阶组件，工具模块等。
 
-## Naming 命名
-
-  - **扩展名**: React模块使用 `.jsx` 扩展名.
-  - **文件名**: 文件名使用帕斯卡命名. 如, `ReservationCard.jsx`.
-  - **引用命名**: React模块名使用帕斯卡命名，实例使用骆驼式命名. eslint: [`react/jsx-pascal-case`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-pascal-case.md)
-
     ```jsx
-    // bad
-    import reservationCard from './ReservationCard';
-
-    // good
-    import ReservationCard from './ReservationCard';
-
-    // bad
-    const ReservationItem = <ReservationCard />;
-
-    // good
-    const reservationItem = <ReservationCard />;
-    ```
-
-  - **模块命名**: 模块使用当前文件名一样的名称. 比如 `ReservationCard.jsx` 应该包含名为 `ReservationCard`的模块. 但是，如果整个文件夹是一个模块，使用 `index.js`作为入口文件，然后直接使用 `index.js` 或者文件夹名作为模块的名称:
-
-    ```jsx
-    // bad
-    import Footer from './Footer/Footer';
-
-    // bad
-    import Footer from './Footer/index';
-
-    // good
-    import Footer from './Footer';
-    ```
-  - **高阶模块命名**: 对于生成一个新的模块，其中的模块名 `displayName` 应该为高阶模块名和传入模块名的组合. 例如, 高阶模块 `withFoo()`, 当传入一个 `Bar` 模块的时候， 生成的模块名 `displayName` 应该为 `withFoo(Bar)`.
-
-    > 为什么？一个模块的 `displayName` 可能会在开发者工具或者错误信息中使用到，因此有一个能清楚的表达这层关系的值能帮助我们更好的理解模块发生了什么，更好的Debug.
-
-    ```jsx
-    // bad
-    export default function withFoo(WrappedComponent) {
-      return function WithFoo(props) {
-        return <WrappedComponent {...props} foo />;
+     function downloadExl(json, type) {
+        var tmpdata = json[0];
+        json.unshift({});
+        var keyMap = []; //获取keys
+        for (var k in tmpdata) {
+            keyMap.push(k);
+            json[0][k] = k;
+        }
+        var tmpdata = [];//用来保存转换好的json
+        json.map((v, i) => keyMap.map((k, j) => Object.assign({}, {
+            v: v[k],
+            position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
+        }))).reduce((prev, next) => prev.concat(next)).forEach((v, i) => tmpdata[v.position] = {
+            v: v.v
+        });
+        var outputPos = Object.keys(tmpdata); //设置区域,比如表格从A1到D10
+        tmpdata["B1"].s = { font: { sz: 14, bold: true, color: { rgb: "88FFAA99" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "88FF88" } } };//<====设置xlsx单元格样式
+        tmpdata["B1"].l = { Target: "https://github.com/SheetJS/js-xlsx#writing-options", Tooltip: "Find us @ SheetJS.com!" };
+        tmpdata ['C2'].l  = {Target: "＃A2" };
+        tmpdata['B*'] = { font: { sz: 14, bold: true, color: { rgb: "88FFAA99" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "88FF88" } } };
+        tmpdata["!merges"] = [{
+            s: { c: 1, r: 0 },
+            e: { c: 4, r: 0 }
+        }];//<====合并单元格
+        var tmpWB = {
+            SheetNames: ['mySheet', 'mySheet2'], //保存的表标题
+            Sheets: {
+                'mySheet': Object.assign({},
+                    tmpdata, //内容
+                    {
+                        '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
+                    }),
+                'mySheet2': Object.assign({},
+                    tmpdata, //内容
+                    {
+                        '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 2] //设置填充区域
+                    })
+            }
+        };
+        tmpDown = new Blob([s2ab(XLSX.write(tmpWB,
+            { bookType: (type == undefined ? 'xlsx' : type), bookSST: false, type: 'binary' }//这里的数据是用来定义导出的格式类型
+        ))], {
+                type: ""
+            });
+         //创建二进制对象写入转换好的字节流
+        var href = URL.createObjectURL(tmpDown); //创建对象超链接
+        var downloadEle = document.createElement('a');
+        downloadEle.href = href;
+        downloadEle.download = "导出报表.xlsx";
+        document.body.appendChild(downloadEle);
+        downloadEle.click();
+        window.requestAnimationFrame(function(){
+            document.body.removeChild(downloadEle);
+            URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个object URL
+        });
       }
+    ```
+
+    ```jsx
+    // 字符串转字符流
+    function s2ab(s) {
+      var buf = new ArrayBuffer(s.length);
+      var view = new Uint8Array(buf);
+      for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+      return buf;
     }
+    ```
 
-    // good
-    export default function withFoo(WrappedComponent) {
-      function WithFoo(props) {
-        return <WrappedComponent {...props} foo />;
+    ```jsx
+    // 将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]。
+    function getCharCol(n) {
+      let temCol = '',
+          s = '',
+          m = 0·
+      while (n > 0) {··
+          m = n % 26 + 1
+          s = String.fromCharCode(m + 64) + s
+          n = (n - m) / 26
       }
-
-      const wrappedComponentName = WrappedComponent.displayName
-        || WrappedComponent.name
-        || 'Component';
-
-      WithFoo.displayName = `withFoo(${wrappedComponentName})`;
-      return WithFoo;
+      return s
     }
     ```
 
