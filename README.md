@@ -56,12 +56,68 @@
     $ npm install xlsx
     ```
 
-## Mixins
+## 样式
 
-  - [不要使用 mixins](https://facebook.github.io/react/blog/2016/07/13/mixins-considered-harmful.html).
+  - 单元格样式样式有fill，font，numFmt，alignment，和border。
 
     ```jsx
-     function downloadExl(json, type) {
+    wb["B1"].s = {
+      font: { 
+        sz: 14,
+        bold: true,
+        color: { rgb: "88FFAA99" }
+        }, 
+      fill: { 
+        bgColor: { indexed: 64 }, 
+        fgColor: { rgb: "88FF88" } 
+        },
+      alignment: {
+        horizontal: "center" ,
+        vertical: "center"
+        }，
+      border:{
+        top:{
+            style:'thick',
+            color: { auto: 1}
+        },
+        left:{
+            style:'thick',
+            color: { auto: 1}
+        },
+        diagonal:{
+            style:'thick',
+            color: { rgb: "FFFFAA00" }
+        },
+        bottom:{
+            style:'thick',
+            color: { theme: "1", tint: "-0.1"},
+        },
+        right:{
+            style:'thick',
+            color: { indexed: 64}
+        },
+        diagonalUp:	true,
+        diagonalDown: false
+        }
+      }
+    ```
+
+## 合并单元格
+
+  - c为列， r为行 从0开始
+
+    ```jsx
+     wb["!merges"] = [{
+        s: { c: C, r: R },
+        e: { c: C, r: R }
+    }]
+    ```
+
+## Demo
+
+  - 下面是个简单的demo
+
+    ```jsx
         var tmpdata = json[0];
         json.unshift({});
         var keyMap = []; //获取keys
@@ -140,64 +196,6 @@
       return s
     }
     ```
-
-## 样式
-
-  - 单元格样式样式有fill，font，numFmt，alignment，和border。
-
-    ```jsx
-    wb["B1"].s = {
-      font: { 
-        sz: 14,
-        bold: true,
-        color: { rgb: "88FFAA99" }
-        }, 
-      fill: { 
-        bgColor: { indexed: 64 }, 
-        fgColor: { rgb: "88FF88" } 
-        },
-      alignment: {
-        horizontal: "center" ,
-        vertical: "center"
-        }，
-      border:{
-        top:{
-            style:'thick',
-            color: { auto: 1}
-        },
-        left:{
-            style:'thick',
-            color: { auto: 1}
-        },
-        diagonal:{
-            style:'thick',
-            color: { rgb: "FFFFAA00" }
-        },
-        bottom:{
-            style:'thick',
-            color: { theme: "1", tint: "-0.1"},
-        },
-        right:{
-            style:'thick',
-            color: { indexed: 64}
-        },
-        diagonalUp:	true,
-        diagonalDown: false
-        }
-      }
-    ```
-
-## 合并单元格
-
-  - c为列， r为行 从0开始
-
-    ```jsx
-     wb["!merges"] = [{
-        s: { c: C, r: R },
-        e: { c: C, r: R }
-    }]
-    ```
-
 ## Alignment 代码对齐
 
   - 遵循以下的JSX语法缩进/格式. eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md)
