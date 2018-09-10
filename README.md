@@ -120,6 +120,7 @@
         });
       }
     ```
+ - 处理方法.
 
     ```jsx
     // 字符串转字符流
@@ -129,9 +130,6 @@
       for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
       return buf;
     }
-    ```
-
-    ```jsx
     // 将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]。
     function getCharCol(n) {
       let temCol = '',
