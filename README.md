@@ -80,7 +80,6 @@
         tmpdata["B1"].s = { font: { sz: 14, bold: true, color: { rgb: "88FFAA99" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "88FF88" } } };//<====设置xlsx单元格样式
         tmpdata["B1"].l = { Target: "https://github.com/SheetJS/js-xlsx#writing-options", Tooltip: "Find us @ SheetJS.com!" };
         tmpdata ['C2'].l  = {Target: "＃A2" };
-        tmpdata['B*'] = { font: { sz: 14, bold: true, color: { rgb: "88FFAA99" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "88FF88" } } };
         tmpdata["!merges"] = [{
             s: { c: 1, r: 0 },
             e: { c: 4, r: 0 }
@@ -133,7 +132,7 @@
       let temCol = '',
           s = '',
           m = 0·
-      while (n > 0) {··
+      while (n > 0) {
           m = n % 26 + 1
           s = String.fromCharCode(m + 64) + s
           n = (n - m) / 26
@@ -142,32 +141,61 @@
     }
     ```
 
-  - **属性命名**: 避免使用DOM相关的属性来用作其他的用途。
+  - 样式
 
-  > 为什么？对于`style` 和 `className`这样的属性名，我们都会默认它们代表一些特殊的含义，如元素的样式，CSS class的名称。在你的应用中使用这些属性来表示其他的含义会使你的代码更难阅读，更难维护，并且可能会引起bug。
+  > 单元格样式样式有fill，font，numFmt，alignment，和border。
 
     ```jsx
-    // bad
-    <MyComponent style="fancy" />
-
-    // good
-    <MyComponent variant="fancy" />
+    wb["B1"].s = {
+      font: { 
+        sz: 14,
+        bold: true,
+        color: { rgb: "88FFAA99" }
+        }, 
+      fill: { 
+        bgColor: { indexed: 64 }, 
+        fgColor: { rgb: "88FF88" } 
+        },
+      alignment: {
+        horizontal: "center" ,
+        vertical: "center"
+        }，
+      border:{
+        top:{
+            style:'thick',
+            color: { auto: 1}
+        },
+        left:{
+            style:'thick',
+            color: { auto: 1}
+        },
+        diagonal:{
+            style:'thick',
+            color: { rgb: "FFFFAA00" }
+        },
+        bottom:{
+            style:'thick',
+            color: { theme: "1", tint: "-0.1"},
+        },
+        right:{
+            style:'thick',
+            color: { indexed: 64}
+        },
+        diagonalUp:	true,
+        diagonalDown: false
+        }
+      }
     ```
 
-## Declaration 声明模块
+## 合并单元格
 
-  - 不要使用 `displayName` 来命名React模块，而是使用引用来命名模块， 如 class 名称.
+  - c为列， r为行 从0开始
 
     ```jsx
-    // bad
-    export default React.createClass({
-      displayName: 'ReservationCard',
-      // stuff goes here
-    });
-
-    // good
-    export default class ReservationCard extends React.Component {
-    }
+     wb["!merges"] = [{
+        s: { c: C, r: R },
+        e: { c: C, r: R }
+    }]
     ```
 
 ## Alignment 代码对齐
