@@ -53,7 +53,57 @@
   - 用npm
 
     ```jsx
-    $ npm install xlsx
+    1、$ npm install xlsx
+    2、添加脚本标记 < script  lang = “ javascript ”  src = “ dist / xlsx.full.min.js ” > < / script >
+    ```
+
+## 单元格
+  ```
+      XXX| A  | B  | C  | D  | E  | F  | G  |
+      ---+----+----+----+----+----+----+----+-
+       1 | A1 | B1 | C1 | D1 | E1 | F1 | G1 |
+       2 | A2 | B2 | C2 | D2 | E2 | F2 | G2 |
+       3 | A3 | B3 | C3 | D3 | E3 | F3 | G3 |
+```
+
+## sheets
+ - wb.SheetNames 工作簿中的工作表的有序列表。例如:['mySheet1', 'mySheet2', 'mySheet3']
+
+ - wb.Sheets[sheetname] 返回表示工作表的对象。
+
+   ```jsx
+   var dataSource = [
+       {
+         "id": 1, "name": "小明", "age": 22,
+       }
+   ]
+
+    var tmpdata = dataSource[0];
+    var keyMap = {
+        id: 'id', 
+        name: '名字',
+        age: '年龄',
+      };
+    dataSource.unshift(keyMap);
+
+    dataSource.map((v, i) => keyMap.map((k, j) => Object.assign({}, {
+        v: v[k],
+        position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
+    }))).reduce((prev, next) => prev.concat(next)).forEach((v, i) => dataSource[v.position] = {
+        v: v.v
+    });
+
+    var outputPos = Object.keys(dataSource); //设置区域,比如表格从A1到D10
+    SheetNames: ['mySheet1', ...], //保存的表标题
+    Sheets: {
+      'mySheet1': Object.assign({},
+          dataSource, //内容
+          {
+              '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
+          })
+      }
+     ...
+    }
     ```
 
 ## 样式
