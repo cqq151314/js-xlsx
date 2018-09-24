@@ -106,6 +106,36 @@
     }
     ```
 
+## 表格对象
+    每个不以!映射到单元格的键（使用A-1表示法）
+    sheet[address] 返回指定地址的单元格对象。
+    特殊表单键（可访问sheet[key]，每个都以!）开头：
+
+   - sheet['!ref']：基于A-1的范围表示工作表范围。使用工作表的函数应使用此参数来确定范围。不处理在范围之外分配的单元格。
+
+   - sheet['!margins']：表示页边距的对象。默认值遵循Excel的“正常”预设。
+    Excel还具有“宽”和“窄”预设，但它们存储为原始测量值。主要属性如下：
+
+```jsx
+    / *将工作表单设置为“normal” * / 
+    ws [ “！margin ” ] = {left：0.7，right：0.7，top：0.75，bottom：0.75，header：0.3，footer：0.3 }
+
+    / *将工作表设置为“wide” * / 
+    ws [ “！margin ” ] = {left：1.0，right：1.0，top：1.0，bottom：1.0，标题：0.5，页脚：0.5 }
+
+    / *将工作表单设置为“narrow” * / 
+    ws [ “！margin ” ] = {left ：0.25，right ：0.25，top ：0.75，bottom ：0.75，header ：0.3，footer ：0.3 }
+ ```
+ - ws['!cols']： 列属性对象的数组。
+ - ws['!rows']：行属性对象的数组。
+ - ws['!merges']：与工作表中合并的单元格对应的范围对象数组。 
+
+ ## 写选项（导出write和writeFile函数接受options参数）
+ - type		------- 输出数据编码（参见下面的输出类型）
+ - cellDates ----	将日期存储为类型d（默认为n）
+ - bookSST	---- 生成共享字符串表**
+ - bookType	------	工作簿类型（默认"xlsx“）
+    
 ## 样式
 
   - 单元格样式样式有fill，font，numFmt，alignment，和border。
