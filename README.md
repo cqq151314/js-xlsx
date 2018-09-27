@@ -56,7 +56,7 @@
     2、添加脚本标记 < script  lang = “ javascript ”  src = “ dist / xlsx.full.min.js ” > < / script >
     ```
 
-## 单元格
+## 工作表
   ```
       XXX| A  | B  | C  | D  | E  | F  | G  |
       ---+----+----+----+----+----+----+----+-
@@ -70,15 +70,18 @@
 
  - wb.Sheets[sheetname] 返回表示工作表的对象。
 
+ - write()写入数据。
+
   ```jsx
     // 表格对象
     const wb = { SheetNames: ['Sheet1','Sheet2', 'Sheet3'], Sheets: {}};
+    // write参数
+    const wopts = { bookType: 'xlsx', type: 'binary' };
     //通过json_to_sheet转成单页(Sheet)数据,填充Sheets
     wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);
     wb.Sheets['Sheet2'] = XLSX.utils.json_to_sheet(data);
     wb.Sheets['Sheet3'] = XLSX.utils.json_to_sheet(data);
     // write方法写入数据
-    saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), "这里是下载的文件名" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
     const Blobs = new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" });
     const fileName = "这里是下载的文件名" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType);
     saveAs(Blobs, fileName);
@@ -111,7 +114,17 @@
         });
     }
   ```
-- http://jsbin.com/hupuhuvabo/edit?html,js,console,output
+- http://jsbin.com/yiyenuxasi/edit?html,js,console,output
+
+ ## 写选项（导出write函数接受options参数）
+ - type		------- 输出数据编码（参见下面的输出类型）
+ - bookType	------	工作簿类型（默认"xlsx“）
+ - 其它参数详见api（https://github.com/SheetJS/js-xlsx）
+
+ ## Utility Functions（基于工作表）
+- The sheet_to_* functions accept a worksheet and an optional options object.（XLSX.utils.sheet_add_json）
+
+- The *_to_sheet functions accept a data object and an optional options object.（XLSX.utils.json_to_sheet）
 
 ## 表格对象
     每个不以!映射到单元格的键（使用A-1表示法）
@@ -136,12 +149,6 @@
  - ws['!cols']： 列属性对象的数组。
  - ws['!rows']：行属性对象的数组。
  - ws['!merges']：与工作表中合并的单元格对应的范围对象数组。 
-
- ## 写选项（导出write和writeFile函数接受options参数）
- - type		------- 输出数据编码（参见下面的输出类型）
- - cellDates ----	将日期存储为类型d（默认为n）
- - bookSST	---- 生成共享字符串表**
- - bookType	------	工作簿类型（默认"xlsx“）
     
 ## 样式
 
