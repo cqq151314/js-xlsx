@@ -15,16 +15,16 @@
 
   - <a>标签的download属性实现点击下载
 
-    ```jsx
-    // 如果没传maps则取数据的字段作为maps { 姓名: 'name', 年龄: 'age' }、
-    const keys = Object.keys(maps);
+  ```jsx
+  // 如果没传maps则取数据的字段作为maps { 姓名: 'name', 年龄: 'age' }、
+  const keys = Object.keys(maps);
 
-    const csvStr = BOM + [
-      keys.map(key => maps[key]).toString(),
-      ...dataSource.map(item => keys.map(key => item[key]).toString())
-    ].join('\n');
+  const csvStr = BOM + [
+    keys.map(key => maps[key]).toString(),
+    ...dataSource.map(item => keys.map(key => item[key]).toString())
+  ].join('\n');
 
-    const downloadEle = document.createElement('a');
+  const downloadEle = document.createElement('a');
 
     downloadEle.href = `data:attachment/csv,${encodeURI(csvStr)}`;
     downloadEle.target = '_blank';
@@ -34,8 +34,7 @@
     downloadEle.click();
     document.body.removeChild(downloadEle);
     }
-    ```
-
+  ```
   - csv文件分行用 “,”，而分列用\n无效，必须使用encodeURI进行编码.
   - 导出csv 格式， 使用Excel 打开会发现中文是乱码，但是用其他文本程序打开确是正常的,原因就是少了一个 BOM头 。  \ufeff。
 
@@ -71,40 +70,48 @@
 
  - wb.Sheets[sheetname] 返回表示工作表的对象。
 
-   ```jsx
-   var dataSource = [
-       {
-         "id": 1, "name": "小明", "age": 22,
-       }
-   ]
+  ```jsx
+    // 表格对象
+    const wb = { SheetNames: ['Sheet1','Sheet2', 'Sheet3'], Sheets: {}};
+    //通过json_to_sheet转成单页(Sheet)数据,填充Sheets
+    wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);
+    wb.Sheets['Sheet2'] = XLSX.utils.json_to_sheet(data);
+    wb.Sheets['Sheet3'] = XLSX.utils.json_to_sheet(data);
+    // write方法写入数据
+    saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), "这里是下载的文件名" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+    const Blobs = new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" });
+    const fileName = "这里是下载的文件名" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType);
+    saveAs(Blobs, fileName);
 
-    var tmpdata = dataSource[0];
-    var keyMap = {
-        id: 'id', 
-        name: '名字',
-        age: '年龄',
-      };
-    dataSource.unshift(keyMap);
-
-    dataSource.map((v, i) => keyMap.map((k, j) => Object.assign({}, {
-        v: v[k],
-        position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
-    }))).reduce((prev, next) => prev.concat(next)).forEach((v, i) => dataSource[v.position] = {
-        v: v.v
-    });
-
-    var outputPos = Object.keys(dataSource); //设置区域,比如表格从A1到D10
-    SheetNames: ['mySheet1', ...], //保存的表标题
-    Sheets: {
-      'mySheet1': Object.assign({},
-          dataSource, //内容
-          {
-              '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
-          })
+    // 将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]。
+    function getCharCol(n) {
+      let temCol = '',
+          s = '',
+          m = 0·
+      while (n > 0) {
+          m = n % 26 + 1
+          s = String.fromCharCode(m + 64) + s
+          n = (n - m) / 26
       }
-     ...
+      return s
     }
-    ```
+  ```
+
+  ```jsx
+    // 自定义的下载文件实现方式
+    function saveAs(obj, fileName) { 
+        var downloadEle = document.createElement('a');
+        downloadEle.href = URL.createObjectURL(obj);
+        downloadEle.download = fileName;
+        document.body.appendChild(downloadEle);
+        downloadEle.click();
+        window.requestAnimationFrame(function(){
+          document.body.removeChild(downloadEle);
+          URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个object URL
+        });
+    }
+  ```
+- http://jsbin.com/hupuhuvabo/edit?html,js,console,output
 
 ## 表格对象
     每个不以!映射到单元格的键（使用A-1表示法）
