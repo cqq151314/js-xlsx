@@ -99,13 +99,13 @@
     // 自定义的下载文件实现方式
     function saveAs(obj, fileName) { 
         var downloadEle = document.createElement('a');
-        downloadEle.href = URL.createObjectURL(obj);
+        downloadEle.href = URL.createObjectURL(obj); // URL对象创建
         downloadEle.download = fileName;
         document.body.appendChild(downloadEle);
         downloadEle.click();
         window.requestAnimationFrame(function(){
           document.body.removeChild(downloadEle);
-          URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个object URL
+          URL.revokeObjectURL(downloadEle.href); //用URL.revokeObjectURL()来释放这个object URL
         });
     }
   ```
@@ -275,3 +275,6 @@
       return s
     }
     ```
+  ## 参考资料
+  - [URL.createObjectURL和URL.revokeObjectURL](https://www.cnblogs.com/liulangmao/p/4262565.html)
+  - 
