@@ -1,4 +1,4 @@
-# js-xlsx/导出报表进阶
+# sheetjs 前端操作Excel的js框架
 
 *一个excel可以导出多个sheet，可进行单元格的设置与合并*
 
@@ -53,7 +53,8 @@
 
     ```jsx
     1、$ npm install xlsx
-    2、添加脚本标记 < script  lang = “ javascript ”  src = “ dist / xlsx.full.min.js ” > < / script >
+    2、npm install xlsx-style（需要设置样式在装）
+    3、添加脚本标记 < script  lang = “ javascript ”  src = “ dist / xlsx.full.min.js ” > < / script >
     ```
 
 ## 工作表
@@ -92,16 +93,10 @@
 
     // 字符串转字符流
     function s2ab(s) {
-      if (typeof ArrayBuffer !== 'undefined') {
-          var buf = new ArrayBuffer(s.length);
-          var view = new Uint8Array(buf);
-          for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-          return buf;
-        } else {
-          var buf = new Array(s.length);
-          for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
-          return buf;
-        }
+      var buf = new ArrayBuffer(s.length);
+      var view = new Uint8Array(buf);
+      for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+      return buf;
     }
   ```
 
@@ -129,21 +124,51 @@
 - The *_to_sheet functions accept a data object and an optional options object.（XLSX.utils.json_to_sheet）
 
 ## XLSX.utils.json_to_sheet的使用
+- data: 必要参数
 - header 制定表格的列顺序
   {header ： [ “ S ”，“ h ”，“ e ”，“ e_1 ”，“ t ”，“ J ”，“ S_1 ” ]}
 - skipHeader: 如果为true，则不要在输出中包含标题行
 
 ## 表格对象
-    每个不以!映射到单元格的键（使用A-1表示法）
-    sheet[address] 返回指定地址的单元格对象。
-    特殊表单键（可访问sheet[key]，每个都以!）开头：
+    1、每个不以!映射到单元格的键（使用A-1表示法）
+    2、wb[address] 返回指定地址的单元格对象。
+    3、特殊表单键（可访问wb[key]，每个都以!）开头：
 
-   - sheet['!ref']：基于A-1的范围表示工作表范围。使用工作表的函数应使用此参数来确定范围。不处理在范围之外分配的单元格。
-  - ws['!cols']： 列属性对象的数组。
-  - ws['!rows']：行属性对象的数组。
-  - ws['!merges']：与工作表中合并的单元格对应的范围对象数组。 
+   - wb['!ref']：基于A-1的范围表示工作表范围。使用工作表的函数应使用此参数来确定范围。不处理在范围之外分配的单元格。
+  - wb['!cols']： 列属性对象的数组。
+  - wb['!rows']：行属性对象的数组。
+  - wb['!merges']：与工作表中合并的单元格对应的范围对象数组。
+
+  ## 合并单元格
+  回顾官方文档，sheet提供了一个配置项!merges用来实现单元格合并,sheet['!merges']接受一个数组参数，数组对象的格式如下
+  - wb.sheet['!merges']：与工作表中合并的单元格对应的范围对象数组。
+  - c为列， r为行 从0开始
+
+    ```jsx
+     wb["!merges"] = [{
+        s: { // s为开始
+          c: C,
+          r: R
+        },
+        e: { // e为结束
+          c: C,
+          r: R }
+    }]
+    ``` 
+    如下设置合并A1到D1
+    ```jsx
+    wb.sheet["!merges"] = [{
+      s: { c: 1, r: 0 },
+      e: { c: 4, r: 0 }
+     }]
+     ```
+
+## 设置列宽
+##### sheet提供了一个配置项!cols用来实现设置列宽
+
+ - wb['!cols']=[{wpx: 100}, {wpx: 200}, {wpx: 300}, {wpx: 200}]
     
-## 样式
+## 样式设置（对齐方式 字体/背景颜色 边框）
 
   - 单元格样式样式有fill，font，numFmt，alignment，和border。
 
@@ -187,17 +212,6 @@
         diagonalDown: false
         }
       }
-    ```
-
-## 合并单元格
-
-  - c为列， r为行 从0开始
-
-    ```jsx
-     wb["!merges"] = [{
-        s: { c: C, r: R },
-        e: { c: C, r: R }
-    }]
     ```
 
 ## Demo
