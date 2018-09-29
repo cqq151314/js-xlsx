@@ -86,17 +86,12 @@
     const fileName = "这里是下载的文件名" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType);
     saveAs(Blobs, fileName);
 
-    // 将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]。
-    function getCharCol(n) {
-      let temCol = '',
-          s = '',
-          m = 0·
-      while (n > 0) {
-          m = n % 26 + 1
-          s = String.fromCharCode(m + 64) + s
-          n = (n - m) / 26
-      }
-      return s
+    // 字符串转字符流
+    function s2ab(s) {
+      var buf = new ArrayBuffer(s.length);
+      var view = new Uint8Array(buf);
+      for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+      return buf;
     }
   ```
 
@@ -126,29 +121,19 @@
 
 - The *_to_sheet functions accept a data object and an optional options object.（XLSX.utils.json_to_sheet）
 
+## XLSX.utils.json_to_sheet的使用
+- header 制定表格的列顺序
+  {header ： [ “ S ”，“ h ”，“ e ”，“ e_1 ”，“ t ”，“ J ”，“ S_1 ” ]}
+
 ## 表格对象
     每个不以!映射到单元格的键（使用A-1表示法）
     sheet[address] 返回指定地址的单元格对象。
     特殊表单键（可访问sheet[key]，每个都以!）开头：
 
    - sheet['!ref']：基于A-1的范围表示工作表范围。使用工作表的函数应使用此参数来确定范围。不处理在范围之外分配的单元格。
-
-   - sheet['!margins']：表示页边距的对象。默认值遵循Excel的“正常”预设。
-    Excel还具有“宽”和“窄”预设，但它们存储为原始测量值。主要属性如下：
-
-```jsx
-    / *将工作表单设置为“normal” * / 
-    ws [ “！margin ” ] = {left：0.7，right：0.7，top：0.75，bottom：0.75，header：0.3，footer：0.3 }
-
-    / *将工作表设置为“wide” * / 
-    ws [ “！margin ” ] = {left：1.0，right：1.0，top：1.0，bottom：1.0，标题：0.5，页脚：0.5 }
-
-    / *将工作表单设置为“narrow” * / 
-    ws [ “！margin ” ] = {left ：0.25，right ：0.25，top ：0.75，bottom ：0.75，header ：0.3，footer ：0.3 }
- ```
- - ws['!cols']： 列属性对象的数组。
- - ws['!rows']：行属性对象的数组。
- - ws['!merges']：与工作表中合并的单元格对应的范围对象数组。 
+  - ws['!cols']： 列属性对象的数组。
+  - ws['!rows']：行属性对象的数组。
+  - ws['!merges']：与工作表中合并的单元格对应的范围对象数组。 
     
 ## 样式
 
