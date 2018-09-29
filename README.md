@@ -70,13 +70,18 @@
 
  - wb.Sheets[sheetname] 返回表示工作表的对象。
 
- - write()写入数据。
+  ## write()写入数据（导出write函数接受options参数）
+ - type		------- 输出数据编码（参见下面的输出类型）
+ - bookType	------	工作簿类型（默认"xlsx“）
+ - 其它参数详见api（https://github.com/SheetJS/js-xlsx）
+
 
   ```jsx
     // 表格对象
     const wb = { SheetNames: ['Sheet1','Sheet2', 'Sheet3'], Sheets: {}};
     // write参数
     const wopts = { bookType: 'xlsx', type: 'binary' };
+  
     //通过json_to_sheet转成单页(Sheet)数据,填充Sheets
     wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);
     wb.Sheets['Sheet2'] = XLSX.utils.json_to_sheet(data);
@@ -99,22 +104,19 @@
     // 自定义的下载文件实现方式
     function saveAs(obj, fileName) { 
         var downloadEle = document.createElement('a');
-        downloadEle.href = URL.createObjectURL(obj); // URL对象创建
+        var objectUrl = URL.createObjectURL(obj);
+        downloadEle.href = objectUrl; // URL对象创建
         downloadEle.download = fileName;
         document.body.appendChild(downloadEle);
         downloadEle.click();
         window.requestAnimationFrame(function(){
           document.body.removeChild(downloadEle);
-          URL.revokeObjectURL(downloadEle.href); //用URL.revokeObjectURL()来释放这个object URL
+          URL.revokeObjectURL(objectUrl); //用URL.revokeObjectURL()来释放这个object URL
         });
     }
   ```
 - http://jsbin.com/yiyenuxasi/edit?html,js,console,output
 
- ## 写选项（导出write函数接受options参数）
- - type		------- 输出数据编码（参见下面的输出类型）
- - bookType	------	工作簿类型（默认"xlsx“）
- - 其它参数详见api（https://github.com/SheetJS/js-xlsx）
 
  ## Utility Functions（基于工作表）
 - The sheet_to_* functions accept a worksheet and an optional options object.（XLSX.utils.sheet_add_json）
