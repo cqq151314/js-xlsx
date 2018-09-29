@@ -71,9 +71,8 @@
  - wb.Sheets[sheetname] 返回表示工作表的对象。
 
   ## write()写入数据（导出write函数接受options参数）
- - type		------- 输出数据编码（参见下面的输出类型）
+ - type		------- [输出数据编码](https://github.com/SheetJS/js-xlsx#output-type)
  - bookType	------	工作簿类型（默认"xlsx“）
- - 其它参数详见api（https://github.com/SheetJS/js-xlsx）
 
 
   ```jsx
@@ -93,10 +92,16 @@
 
     // 字符串转字符流
     function s2ab(s) {
-      var buf = new ArrayBuffer(s.length);
-      var view = new Uint8Array(buf);
-      for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-      return buf;
+      if (typeof ArrayBuffer !== 'undefined') {
+          var buf = new ArrayBuffer(s.length);
+          var view = new Uint8Array(buf);
+          for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+          return buf;
+        } else {
+          var buf = new Array(s.length);
+          for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+          return buf;
+        }
     }
   ```
 
@@ -115,7 +120,7 @@
         });
     }
   ```
-- http://jsbin.com/yiyenuxasi/edit?html,js,console,output
+- http://jsbin.com/nizawozaxu/6/edit?html,js,console,output
 
 
  ## Utility Functions（基于工作表）
@@ -126,6 +131,7 @@
 ## XLSX.utils.json_to_sheet的使用
 - header 制定表格的列顺序
   {header ： [ “ S ”，“ h ”，“ e ”，“ e_1 ”，“ t ”，“ J ”，“ S_1 ” ]}
+- skipHeader: 如果为true，则不要在输出中包含标题行
 
 ## 表格对象
     每个不以!映射到单元格的键（使用A-1表示法）
