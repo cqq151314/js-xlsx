@@ -14,7 +14,7 @@ var data = [{ //测试数据
     "size": "M",
   },{ //测试数据
     "shop": "数云食堂",
-    "title": "毛衣",
+    "title": "毛衣毛衣",
     "price": "100",
     "size": "M",
   }];
@@ -41,7 +41,7 @@ function downloadExl(json, type) {
     }
   };
   // 设置单元格样式
-  wbs.Sheets['Sheet1']["A1"].s = {
+  wbs.Sheets['Sheet1']["B2"].s = {
     font: {
         sz: 20,
         bold: true,
@@ -55,30 +55,34 @@ function downloadExl(json, type) {
     },
     alignment: {
         horizontal: "center" ,
-        vertical: "center"
+        vertical: "center",
+        wrapText: true
     },
     border:{
         top:{
             style:'thick',
-            color: { auto: 1}
+            color: { auto: 2}
+        },
+        left: {
+          style:'dotted',
+          color: { rgb: "88FFAA99" }
         },
         diagonal:{
             style:'thick',
-            color: { rgb: "FFFFAA00" }
+            color: { rgb: "88FFAA99" }
         },
         bottom:{
             style:'thick',
-            color: { theme: "1", tint: "-0.1"},
+            color: { theme: "1", tint: "-0.9"},
         },
         right:{
             style:'thick',
             color: { indexed: 64}
         },
         diagonalUp:	true, // 对角线
-        diagonalDown: false
+        diagonalDown: true
     }
 };
-console.log(XLSX);
 
   var Blobs = new Blob([s2ab(XLSX.write(wbs, wopts))], { type: "application/octet-stream" });
   saveAs(Blobs, "这里是下载的文件名" + '.' + (wopts.bookType=="biff2" ? "xls" : wopts.bookType));
