@@ -132,9 +132,8 @@
 ## 表格对象
     1、每个不以!映射到单元格的键（使用A-1表示法）
     2、wb[address] 返回指定地址的单元格对象。
-    3、特殊表单键（可访问wb[key]，每个都以!）开头：
 
-   - wb['!ref']：基于A-1的范围表示工作表范围。使用工作表的函数应使用此参数来确定范围。不处理在范围之外分配的单元格。
+  - wb['!ref']：基于A-1的范围表示工作表范围。使用工作表的函数应使用此参数来确定范围。不处理在范围之外分配的单元格。
   - wb['!cols']： 列属性对象的数组。
   - wb['!rows']：行属性对象的数组。
   - wb['!merges']：与工作表中合并的单元格对应的范围对象数组。
@@ -148,7 +147,7 @@
      wb["!merges"] = [{
         s: { // s为开始
           c: C,
-          r: R
+          r: R·
         },
         e: { // e为结束
           c: C,
@@ -170,7 +169,7 @@
     
 ## 样式设置（字体/背景颜色、对齐方式、边框）
 
-  - 单元格样式有font，fill，font，numFmt，alignment，和border。
+  - 单元格样式有font、fill、alignment、和border。
 
     ```jsx
     wb["B1"].s = {
@@ -180,8 +179,7 @@
         color: { rgb: "88FFAA99" }
         }, 
       fill: { 
-        bgColor: { indexed: 64 }, 
-        fgColor: { rgb: "88FF88" } 
+        bgColor: { rgb: "88FF88" } 
         },
       alignment: {
         horizontal: "center" ,
