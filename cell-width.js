@@ -30,7 +30,8 @@ function saveAs(obj, fileName) {//当然可以自定义简单的下载文件实�
       wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);//通过json_to_sheet转成单页(Sheet)数据
       // 设置列宽
       wb.Sheets['Sheet1']['!cols'] = [{wpx: 100}, {wpx: 200}, {wpx: 300}, {wpx: 200}];
-    
+      wb.Sheets['Sheet1']['!rows'] = [{hpx: 50}, {hpx: 50}, {hpx: 50}];
+     
       const Blobs = new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" });
       saveAs(Blobs, "这里是下载的文件名" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
     }

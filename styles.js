@@ -36,7 +36,9 @@ function downloadExl(json, type) {
     "Sheet1": Object.assign({},
       tmpdata, //内容
       {
-          '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
+        '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
+      },{
+        '!cols': [{wpx: 100}, {wpx: 200}, {wpx: 300}, {wpx: 200}]
       })
     }
   };
