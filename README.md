@@ -215,3 +215,9 @@
     ```
   ## 参考资料
   - [URL.createObjectURL和URL.revokeObjectURL](https://www.cnblogs.com/liulangmao/p/4262565.html)
+
+  - [SheetJS/js-xlsx](hhttps://github.com/SheetJS/js-xlsx#output-type)
+
+  - [xlsx-style](https://www.npmjs.com/package/xlsx-style#cell-styles)
+
+  - [demo](https://www.jianshu.com/p/dfa5c043c5be)
