@@ -5,15 +5,14 @@
 ## 内容目录
 
   1. a标签的download导出excel
-  1. js-xlsx介绍及使用
-  1. sheets
-  1. 单元格的合并
-  1. 单元格的样式设置
-  1. demo
+  2. js-xlsx介绍及使用
+  3. 工作表
+  4. sheets
+  5. 单元格的合并
+  6. 单元格的样式设置
 
-## <a>标签
 
-  - <a>标签的download属性实现点击下载
+  ## <a>标签的download属性实现点击下载
 
   ```jsx
   // 如果没传maps则取数据的字段作为maps { 姓名: 'name', 年龄: 'age' }、
