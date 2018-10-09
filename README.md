@@ -75,7 +75,7 @@
  - wb.Sheets[sheetname] 返回表示工作表的对象。
 
   ## write()写入数据（导出write函数接受options参数）
- - type		------- [输出数据编码](https://github.com/SheetJS/js-xlsx#output-type)
+ - type		------- [文件编码](https://github.com/SheetJS/js-xlsx#output-type)
  - bookType	------	工作簿类型（默认"xlsx“）
 
 
