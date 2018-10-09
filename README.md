@@ -51,9 +51,13 @@
   - 用npm
 
     ```jsx
-    1、$ npm install xlsx
-    2、npm install xlsx-style（需要设置样式在装）
-    3、添加脚本标记 < script  lang = “ javascript ”  src = “ dist / xlsx.full.min.js ” > < / script >
+    $ npm install xlsx
+    ```
+
+- 样式(需要设置表格样式装)
+
+    ```jsx
+    npm install xlsx-style
     ```
 
 ## 工作表
@@ -221,5 +225,8 @@
   - [SheetJS/js-xlsx](https://github.com/SheetJS/js-xlsx#output-type)
 
   - [xlsx-style](https://www.npmjs.com/package/xlsx-style#cell-styles)
+
+  - [Blob对象]
+  (https://www.cnblogs.com/hhhyaaon/p/5928152.html)
 
   - [demo](https://www.jianshu.com/p/dfa5c043c5be)
