@@ -1,43 +1,16 @@
-# sheetjs 前端操作Excel的js框架
+# sheetjs 前端操作Excel的js插件
 
 *一个excel可以导出多个sheet，可进行单元格的设置与合并*
 
 ## 内容目录
 
-  1. a标签的download导出excel
-  2. js-xlsx介绍及使用
-  3. 工作表
-  4. sheets
-  5. 单元格的合并
-  6. 单元格的样式设置
+  1. js-xlsx安装
+  2. 工作表
+  3. sheets
+  4. 单元格的合并
+  5. 单元格的样式设置
 
-
-  ## <a>标签的download属性实现点击下载
-
-  ```jsx
-  // 如果没传maps则取数据的字段作为maps { 姓名: 'name', 年龄: 'age' }、
-  const keys = Object.keys(maps);
-
-  const csvStr = BOM + [
-    keys.map(key => maps[key]).toString(),
-    ...dataSource.map(item => keys.map(key => item[key]).toString())
-  ].join('\n');
-
-  const downloadEle = document.createElement('a');
-
-    downloadEle.href = `data:attachment/csv,${encodeURI(csvStr)}`;
-    downloadEle.target = '_blank';
-    downloadEle.download = fileName;
-
-    document.body.appendChild(downloadEle);
-    downloadEle.click();
-    document.body.removeChild(downloadEle);
-    }
-  ```
-  - csv文件分行用 “,”，而分列用\n无效，必须使用encodeURI进行编码.
-  - 导出csv 格式， 使用Excel 打开会发现中文是乱码，但是用其他文本程序打开确是正常的,原因就是少了一个 BOM头 。  \ufeff。
-
-## js-xlsx介绍
+## js-xlsx安装
    各种电子表格格式的解析器和编写器  
 
   - 在浏览器中使用
