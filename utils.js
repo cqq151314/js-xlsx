@@ -17,10 +17,10 @@
       data, 
       {header:[ 'title', 'shop', 'size', 'price' ]}
     );//通过json_to_sheet转成单页(Sheet)数据
-    wb.Sheets['Sheet2'] = XLSX.utils.json_to_sheet(data, {skipHeader: true});
-    wb.Sheets['Sheet3'] = XLSX.utils.json_to_sheet(data);
+    wb.Sheets['Sheet2'] = XLSX.utils.json_to_sheet(data, {header:["title", "shop"], skipHeader: true});
+    wb.Sheets['Sheet3'] = XLSX.utils.json_to_sheet(data, {header:["title","shop","price","size"], skipHeader:true});
     const Blobs = new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" });
-    saveAs(Blobs, "这里是下载的文件名" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+    saveAs(Blobs, "这里是下载的文件名" + '.' + wopts.bookType);
   }
 
   function s2ab(s) {

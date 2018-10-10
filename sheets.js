@@ -25,11 +25,12 @@ function saveAs(obj, fileName) {//当然可以自定义简单的下载文件实�
       "size": "M",
   }];
     function downloadExl(data){
-      const wopts = { bookType: 'xlsx', type: 'binary' };
-      const wb = { SheetNames: ['Sheet1','Sheet2', 'Sheet3'], Sheets: {}, Props: {} };
+      const wopts = { bookType: 'csv', type: 'string' };
+      const wb = { SheetNames: ['Sheet1','Sheet2', 'Sheet3'], Sheets: {} };
       wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);//通过json_to_sheet转成单页(Sheet)数据
       wb.Sheets['Sheet2'] = XLSX.utils.json_to_sheet(data);
       wb.Sheets['Sheet3'] = XLSX.utils.json_to_sheet(data);
+      console.log(wb)
       const Blobs = new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" });
       saveAs(Blobs, "这里是下载的文件名" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
     }
