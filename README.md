@@ -200,5 +200,3 @@
   - [xlsx-style](https://www.npmjs.com/package/xlsx-style#cell-styles)
 
   - [Blob对象](https://www.cnblogs.com/hhhyaaon/p/5928152.html)
-
-  - [demo](https://www.jianshu.com/p/dfa5c043c5be)
